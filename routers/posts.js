@@ -1,3 +1,10 @@
+// Importa il framework Express
+const express = require("express");
+
+// Crea un router Express
+const router = express.Router();
+
+// Array dei post fornito per l'esercizio
 const posts = [
   {
     id: 1,
@@ -44,4 +51,55 @@ const posts = [
   },
 ];
 
-module.exports = posts;
+// INDEX - GET /posts
+// Restituisce la lista di tutti i post
+router.get("/", (req, res) => {
+  // Bonus: restituisce la lista in formato JSON
+  res.json({
+    message: "Lista dei post",
+    data: posts
+  });
+});
+
+// SHOW - GET /posts/:id  
+// Mostra un singolo post
+router.get("/:id", (req, res) => {
+  const postId = parseInt(req.params.id);
+
+  // Bonus: cerca il post e lo restituisce in formato JSON
+  const post = posts.find(p => p.id === postId);
+
+  if (post) {
+    res.json({
+      message: `Dettaglio del post ${postId}`,
+      data: post
+    });
+  } else {
+    res.status(404).json({
+      message: `Post ${postId} non trovato`
+    });
+  }
+});
+
+// CREATE - POST /posts
+// Crea un nuovo post
+router.post("/", (req, res) => {
+  res.send("Creazione di un nuovo post");
+});
+
+// UPDATE - PUT /posts/:id
+// Aggiorna completamente un post
+router.put("/:id", (req, res) => {
+  const postId = req.params.id;
+  res.send(`Modifica completa del post ${postId}`);
+});
+
+// DELETE - DELETE /posts/:id
+// Elimina un post
+router.delete("/:id", (req, res) => {
+  const postId = req.params.id;
+  res.send(`Cancellazione del post ${postId}`);
+});
+
+// Esporta il router
+module.exports = router;
